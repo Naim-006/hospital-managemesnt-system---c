@@ -1,9 +1,10 @@
-#include "hms.h"
+#include "hms.h" // header file  : ei module e sob header add kore rkhchi :) 
 
-void reception_menu() {
+void reception_menu() { 
     int choice;
     while(1) {
         clear_screen();
+        printf("=== WELCOME TO RightSideUP ===\n");
         printf("=== RECEPTION PORTAL ===\n");
         printf("1. Register New Patient\n");
         printf("2. View All Patients\n");
@@ -38,7 +39,7 @@ void add_patient() {
     get_string("Enter Contact: ", p.contact, 20);
     get_string("Enter Address: ", p.address, 100);
     get_string("Enter Disease/Symptoms: ", p.disease, MAX_DISEASE);
-    p.assigned_doctor_id = 0; // Initially no doctor assigned
+    p.assigned_doctor_id = 0; 
 
     fprintf(file, "%d|%s|%d|%s|%s|%s|%d|%s\n", p.id, p.name, p.age, p.gender, p.contact, p.address, p.assigned_doctor_id, p.disease);
     fclose(file);
@@ -125,3 +126,4 @@ void book_appointment() {
     }
     pause_exec();
 }
+
