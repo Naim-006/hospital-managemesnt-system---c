@@ -38,7 +38,7 @@ void add_patient() {
     get_string("Enter Gender: ", p.gender, 10);
     get_string("Enter Contact: ", p.contact, 20);
     get_string("Enter Address: ", p.address, 100);
-    get_string("Enter Disease/Symptoms: ", p.disease, MAX_DISEASE);
+    get_string("Enter Symptoms: ", p.disease, MAX_DISEASE);
     p.assigned_doctor_id = 0; 
 
     fprintf(file, "%d|%s|%d|%s|%s|%s|%d|%s\n", p.id, p.name, p.age, p.gender, p.contact, p.address, p.assigned_doctor_id, p.disease);
@@ -64,8 +64,7 @@ void view_patients() {
     printf("------------------------------------------------------------\n");
 
     while (fgets(buffer, sizeof(buffer), file)) {
-        // Parsing the pipe-delimited format
-        // Note: sscanf with %[^|] reads until pipe.
+         // pipe
         sscanf(buffer, "%d|%[^|]|%d|%[^|]|%[^|]|%[^|]|%d|%[^\n]", 
             &p.id, p.name, &p.age, p.gender, p.contact, p.address, &p.assigned_doctor_id, p.disease);
         
@@ -76,9 +75,6 @@ void view_patients() {
 }
 
 void book_appointment() {
-    // This is a bit tricky with text files. We need to read all, update one, write all back.
-    // Or we can just have a separate appointments.txt that links patient to doctor.
-    // The struct has `assigned_doctor_id`, so we should update the patient record.
     
     int p_id, d_id;
     int found = 0;
@@ -86,7 +82,6 @@ void book_appointment() {
     printf("Enter Patient ID to assign doctor: ");
     scanf("%d", &p_id);
     
-    // Check if patient exists and load all patients to memory (or temp file)
     FILE *file = fopen(PATIENT_FILE, "r");
     if (!file) {
         printf("No patients found.\n");
@@ -104,18 +99,18 @@ void book_appointment() {
         if (p.id == p_id) {
             found = 1;
             printf("Current Doctor ID: %d\n", p.assigned_doctor_id);
-            display_doctor_list(); // Show available doctors
+            display_doctor_list(); // doc
             d_id = get_int("Enter New Doctor ID to assign: ");
             p.assigned_doctor_id = d_id;
             printf("Doctor assigned!\n");
         }
         
-        // Write back
+         // file open korbe read korbe
         fprintf(temp, "%d|%s|%d|%s|%s|%s|%d|%s\n", p.id, p.name, p.age, p.gender, p.contact, p.address, p.assigned_doctor_id, p.disease);
     }
     
     fclose(file);
-    fclose(temp);
+    fclose(temp); //read ses bondo korbe
     
     if (found) {
         remove(PATIENT_FILE);
@@ -126,4 +121,5 @@ void book_appointment() {
     }
     pause_exec();
 }
+
 
