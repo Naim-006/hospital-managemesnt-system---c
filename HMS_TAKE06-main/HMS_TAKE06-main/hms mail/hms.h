@@ -58,6 +58,7 @@ void pause_exec();
 void get_string(char *prompt, char *buffer, int size);
 int get_int(char *prompt);
 int get_next_id(char *filename);
+void developer();
 
 // Reception Module (Ajmine)
 void reception_menu();
@@ -75,6 +76,7 @@ void write_prescription(int doctor_id);
 void patient_menu();
 void view_my_details(int patient_id);
 void view_my_report(int patient_id);
+void view_my_appointments(int patient_id);
 
 // Lab Module (Zihad)
 void lab_menu();

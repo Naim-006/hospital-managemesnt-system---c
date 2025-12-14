@@ -2,11 +2,10 @@
 
 void doctor_login() {
     int id;
-    // For simplicity, we trust the doctor just by ID.
-    // In real app, we check password.
+   
     
     clear_screen();
-    printf("=== DOCTOR LOGIN ===\n");
+      printf("\n===============\033[1;32m DOCTOR LOGIN \033[0m===============\n\n");
     printf("Enter Doctor ID: ");
     scanf("%d", &id);
 
@@ -33,25 +32,9 @@ void doctor_login() {
     if (found) {
         printf("Welcome Dr. %s!\n", d.name);
         pause_exec();
-        // Pass ID to menu so we know who is logged in
-        // But doctor_menu signature in hms.h is void(), let's make it use a static variable or change signature?
-        // Let's change signature or just ask for ID again inside (simpler for this level). 
-        // Actually, let's just make doctor_menu take 'void' and we'll ask ID inside specific functions or use a global.
-        // Better: We'll just pass ID implicitly or change design slightly.
-        // Let's stick to the plan: doctor_menu calls other things. We can make a static global here or just pass it around if I change header.
-        // I will change the logic slightly to be cleaner:
-        // view_assigned_patients(id);
+      
         
-        // Let's implement doctor_menu that takes ID, but header says void.
-        // I will modify doctor_menu implementation to take ID, and Update header later if needed?
-        // No, I can't easily update header right now without context switch. 
-        // I will make doctor_menu() ask for ID again or better, handle the loop inside doctor_login and call helper functions.
-        // Wait, the plan said "doctor_login() & doctor_menu()".
-        // Let's do this: doctor_login CALLS the actual menu loop passing the ID.
-        // But the prototype for doctor_menu is void.
-        // Okay, I will implement a local static helper `doctor_dashboard(int id)` and call it.
-        
-        void doctor_dashboard(int id); // Forward declaration
+        void doctor_dashboard(int id); 
         doctor_dashboard(id);
         
     } else {
@@ -64,7 +47,7 @@ void doctor_dashboard(int id) {
     int choice;
     while(1) {
         clear_screen();
-        printf("=== DOCTOR DASHBOARD (ID: %d) ===\n", id);
+        printf("\n===============\033[1;32m DOCTOR DASHBOARD \033[0m===============\n\n");
         printf("1. View Assigned Patients\n");
         printf("2. Write Prescription\n");
         printf("3. Logout\n");
