@@ -19,7 +19,7 @@ void find_doctor_menu() {
     }
 }
 
-// Helper to show doctor list
+// Help to show doctor list
 void display_doctor_list() {
     FILE *file = fopen(DOCTOR_FILE, "r");
     if (!file) {
@@ -66,4 +66,5 @@ void search_doctor() {
     if (!found) printf("No doctors found with that specialty.\n");
     pause_exec();
 }
+
 
