@@ -1,5 +1,11 @@
 #include "hms.h"
 
+
+void doctor_menu() {
+    doctor_login();
+}
+
+
 void doctor_login() {
     int id;
    
@@ -61,11 +67,10 @@ void doctor_dashboard(int id) {
     }
 }
 
-void doctor_menu() {
-    doctor_login();
-}
+
 
 void view_assigned_patients(int doctor_id) {
+
     FILE *file = fopen(PATIENT_FILE, "r");
     if (!file) {
         printf("No patients found.\n");
@@ -74,34 +79,29 @@ void view_assigned_patients(int doctor_id) {
     }
 
     Patient p;
-    char buffer[MAX_BUFFER];
     int count = 0;
 
     clear_screen();
     printf("=== MY PATIENTS ===\n");
     printf("%-5s %-20s %-5s %-10s %-20s\n",
            "ID", "Name", "Age", "Gender", "Disease");
-    printf("---------------------------------------------------------------\n");
+    printf("-----------------------------------------------------\n");
 
-    while (fgets(buffer, sizeof(buffer), file)) {
-
-    
-        if (sscanf(buffer,
-            "%d|%[^|]|%d|%[^|]|%[^|]|%[^|]|%d|%[^\n]",
-            &p.id,
-            p.name,
-            &p.age,
-            p.gender,
-            p.contact,
-            p.address,
-            &p.assigned_doctor_id,
-            p.disease) == 8)
-        {
-            if (p.assigned_doctor_id == doctor_id) {
-                printf("%-5d %-20s %-5d %-10s %-20s\n",
-                       p.id, p.name, p.age, p.gender, p.disease);
-                count++;
-            }
+    while (fscanf(file,
+        "%d|%[^|]|%d|%[^|]|%[^|]|%[^|]|%d|%[^\n]\n",
+        &p.id,
+        p.name,
+        &p.age,
+        p.gender,
+        p.contact,
+        p.address,
+        &p.assigned_doctor_id,
+        p.disease) == 8)
+    {
+        if (p.assigned_doctor_id == doctor_id) {
+            printf("%-5d %-20s %-5d %-10s %-20s\n",
+                   p.id, p.name, p.age, p.gender, p.disease);
+            count++;
         }
     }
 
@@ -115,21 +115,31 @@ void view_assigned_patients(int doctor_id) {
 }
 
 
+
 void write_prescription(int doctor_id) {
+
     int p_id;
-    char medicine[MAX_BUFFER];
-    
-    view_assigned_patients(doctor_id); 
-    
+    char medicine[200];
+
+    view_assigned_patients(doctor_id);
+
     printf("\nEnter Patient ID to prescribe: ");
     scanf("%d", &p_id);
-    
-    get_string("Enter Prescription/Medicine: ", medicine, MAX_BUFFER);
-    
+
+    printf("Enter Prescription/Medicine: ");
+    scanf(" %[^\n]", medicine);
+
     FILE *file = fopen("prescriptions.txt", "a");
+    if (!file) {
+        printf("Error opening file.\n");
+        pause_exec();
+        return;
+    }
+
     fprintf(file, "%d|%d|%s\n", p_id, doctor_id, medicine);
     fclose(file);
-    
+
     printf("Prescription saved.\n");
     pause_exec();
 }
+
