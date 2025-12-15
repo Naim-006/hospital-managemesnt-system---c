@@ -7,7 +7,7 @@ void patient_menu() {
     printf("Enter Your Patient ID: ");
     scanf("%d", &id);
 
-    // Verify ID
+    
     FILE *file = fopen(PATIENT_FILE, "r");
     if (!file) {
         printf("No patients found.\n");

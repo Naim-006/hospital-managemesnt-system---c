@@ -1,10 +1,9 @@
-#include "hms.h" // header file  : ei module e sob header add kore rkhchi :) 
+#include "hms.h"
 
-void reception_menu() { 
+void reception_menu() {
     int choice;
     while(1) {
         clear_screen();
-        printf("=== WELCOME TO RightSideUP ===\n");
         printf("=== RECEPTION PORTAL ===\n");
         printf("1. Register New Patient\n");
         printf("2. View All Patients\n");
@@ -38,8 +37,8 @@ void add_patient() {
     get_string("Enter Gender: ", p.gender, 10);
     get_string("Enter Contact: ", p.contact, 20);
     get_string("Enter Address: ", p.address, 100);
-    get_string("Enter Symptoms: ", p.disease, MAX_DISEASE);
-    p.assigned_doctor_id = 0; 
+    get_string("Enter Disease/Symptoms: ", p.disease, MAX_DISEASE);
+    p.assigned_doctor_id = 0; // Initially no doctor assigned
 
     fprintf(file, "%d|%s|%d|%s|%s|%s|%d|%s\n", p.id, p.name, p.age, p.gender, p.contact, p.address, p.assigned_doctor_id, p.disease);
     fclose(file);
@@ -64,7 +63,8 @@ void view_patients() {
     printf("------------------------------------------------------------\n");
 
     while (fgets(buffer, sizeof(buffer), file)) {
-         // pipe
+        // Parsing the pipe-delimited format
+        // Note: sscanf with %[^|] reads until pipe.
         sscanf(buffer, "%d|%[^|]|%d|%[^|]|%[^|]|%[^|]|%d|%[^\n]", 
             &p.id, p.name, &p.age, p.gender, p.contact, p.address, &p.assigned_doctor_id, p.disease);
         
@@ -75,43 +75,72 @@ void view_patients() {
 }
 
 void book_appointment() {
-    
+
     int p_id, d_id;
     int found = 0;
-    
+
     printf("Enter Patient ID to assign doctor: ");
     scanf("%d", &p_id);
-    
+    getchar();   // clear newline
+
     FILE *file = fopen(PATIENT_FILE, "r");
     if (!file) {
         printf("No patients found.\n");
+        pause_exec();
         return;
     }
 
     FILE *temp = fopen("temp.txt", "w");
+    if (!temp) {
+        printf("File error.\n");
+        fclose(file);
+        return;
+    }
+
     char buffer[MAX_BUFFER];
     Patient p;
 
     while (fgets(buffer, sizeof(buffer), file)) {
-        sscanf(buffer, "%d|%[^|]|%d|%[^|]|%[^|]|%[^|]|%d|%[^\n]", 
-            &p.id, p.name, &p.age, p.gender, p.contact, p.address, &p.assigned_doctor_id, p.disease);
-        
-        if (p.id == p_id) {
-            found = 1;
-            printf("Current Doctor ID: %d\n", p.assigned_doctor_id);
-            display_doctor_list(); // doc
-            d_id = get_int("Enter New Doctor ID to assign: ");
-            p.assigned_doctor_id = d_id;
-            printf("Doctor assigned!\n");
+
+        if (sscanf(buffer,
+            "%d|%[^|]|%d|%[^|]|%[^|]|%[^|]|%d|%[^\n]",
+            &p.id,
+            p.name,
+            &p.age,
+            p.gender,
+            p.contact,
+            p.address,
+            &p.assigned_doctor_id,
+            p.disease) == 8)
+        {
+            if (p.id == p_id) {
+                found = 1;
+
+                printf("Current Doctor ID: %d\n", p.assigned_doctor_id);
+                display_doctor_list();
+
+                d_id = get_int("Enter New Doctor ID to assign: ");
+                p.assigned_doctor_id = d_id;
+
+                printf("Doctor assigned successfully!\n");
+            }
+
+            /* write updated or unchanged record */
+            fprintf(temp, "%d|%s|%d|%s|%s|%s|%d|%s\n",
+                    p.id,
+                    p.name,
+                    p.age,
+                    p.gender,
+                    p.contact,
+                    p.address,
+                    p.assigned_doctor_id,
+                    p.disease);
         }
-        
-         // file open korbe read korbe
-        fprintf(temp, "%d|%s|%d|%s|%s|%s|%d|%s\n", p.id, p.name, p.age, p.gender, p.contact, p.address, p.assigned_doctor_id, p.disease);
     }
-    
+
     fclose(file);
-    fclose(temp); //read ses bondo korbe
-    
+    fclose(temp);
+
     if (found) {
         remove(PATIENT_FILE);
         rename("temp.txt", PATIENT_FILE);
@@ -119,7 +148,6 @@ void book_appointment() {
         remove("temp.txt");
         printf("Patient not found.\n");
     }
+
     pause_exec();
 }
-
-
