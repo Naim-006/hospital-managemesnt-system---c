@@ -1,1 +1,10 @@
-1|sadik|21|male|91|mir|0|cse
+1|ajmine|21|male|0171342432|mirpur 10|1|diarrhea
+2|rahim|34|male|0182456789|dhanmondi|4|fever
+3|sumi|26|female|0198765432|uttara|0|cold
+4|karim|45|male|0163344556|mohakhali|1|diabetes
+5|nabila|19|female|0179988776|mirpur 1|0|headache
+6|hasan|52|male|0181122334|banani|1|hypertension
+7|rima|31|female|0192233445|badda|0|asthma
+8|arif|28|male|0165566778|farmgate|0|gastric
+9|tania|40|female|0174455667|gulshan|1|arthritis
+10|sohel|36|male|0186677889|tejgaon|0|flu
