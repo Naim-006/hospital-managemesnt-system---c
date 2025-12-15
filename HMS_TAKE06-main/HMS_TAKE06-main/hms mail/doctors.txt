@@ -1,1 +1,10 @@
-1|zihad|bone specalist|25|032
+1|zihad|bone specialist|25|032
+2|rahman|cardiologist|18|021
+3|sadia|gynecologist|12|014
+4|hasan|neurologist|20|045
+5|arif|medicine specialist|10|018
+6|nabila|dermatologist|8|027
+7|kamal|orthopedic surgeon|22|033
+8|tania|pediatrician|15|019
+9|sohel|ent specialist|9|024
+10|faruk|urologist|17|041
