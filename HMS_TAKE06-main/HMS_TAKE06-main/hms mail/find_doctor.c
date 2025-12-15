@@ -19,7 +19,7 @@ void find_doctor_menu() {
     }
 }
 
-// Helper to show list without pausing (used by reception booking too)
+// Helper to show doctor list
 void display_doctor_list() {
     FILE *file = fopen(DOCTOR_FILE, "r");
     if (!file) {
@@ -56,7 +56,6 @@ void search_doctor() {
     while (fgets(buffer, sizeof(buffer), file)) {
         sscanf(buffer, "%d|%[^|]|%[^|]|%d|%[^\n]", &d.id, d.name, d.specialty, &d.years_experience, d.contact);
         
-        // Simple case-insensitive substring search would be better, but exact match or strstr is okay
         if (strstr(d.specialty, keyword) != NULL) {
              printf("[%d] Dr. %s (%s)\n", d.id, d.name, d.specialty);
              found = 1;
@@ -67,3 +66,4 @@ void search_doctor() {
     if (!found) printf("No doctors found with that specialty.\n");
     pause_exec();
 }
+
