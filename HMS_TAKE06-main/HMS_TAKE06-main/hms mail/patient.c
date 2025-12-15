@@ -123,7 +123,7 @@ void view_my_report(int patient_id) {
 }
 
 void view_my_appointments(int patient_id) {
-    // Find assigned doctor id from patients file
+  
     FILE *pfile = fopen(PATIENT_FILE, "r");
     if (!pfile) {
         printf("No patient records found.\n");
@@ -149,7 +149,7 @@ void view_my_appointments(int patient_id) {
         return;
     }
 
-    // Lookup doctor details
+    
     FILE *dfile = fopen(DOCTOR_FILE, "r");
     if (!dfile) {
         printf("No doctor records found.\n");

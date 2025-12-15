@@ -71,6 +71,7 @@ void doctor_menu();
 void doctor_login();
 void view_assigned_patients(int doctor_id);
 void write_prescription(int doctor_id);
+void doctor_dashboard(int id); 
 
 // Patient Module (Naim)
 void patient_menu();

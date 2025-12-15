@@ -8,7 +8,36 @@ void doctor_login() {
       printf("\n===============\033[1;32m DOCTOR LOGIN \033[0m===============\n\n");
     printf("Enter Doctor ID: ");
     scanf("%d", &id);
-    doctor_dashboard(id);
+
+    FILE *file = fopen(DOCTOR_FILE, "r");
+    if (!file) {
+        printf("Error: No doctors in system.\n");
+        pause_exec();
+        return;
+    }
+    
+    Doctor d;
+    int found = 0;
+    char buffer[MAX_BUFFER];
+    while (fgets(buffer, sizeof(buffer), file)) {
+        sscanf(buffer, "%d|%[^|]|%[^|]|%d|%[^\n]", &d.id, d.name, d.specialty, &d.years_experience, d.contact);
+        if (d.id == id) {
+            found = 1;
+            break;
+        }
+    }
+    fclose(file);
+
+    if (found) {
+        
+        doctor_dashboard(id);
+        
+    } else {
+        printf("Doctor ID not found.\n");
+        pause_exec();
+    }
+
+ 
 
    
 }
@@ -56,7 +85,7 @@ void view_assigned_patients(int doctor_id) {
 
     while (fgets(buffer, sizeof(buffer), file)) {
 
-        /* validate sscanf */
+    
         if (sscanf(buffer,
             "%d|%[^|]|%d|%[^|]|%[^|]|%[^|]|%d|%[^\n]",
             &p.id,
